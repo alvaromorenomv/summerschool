@@ -36,12 +36,12 @@ int main(int argc, char *argv[])
     t0 = MPI_Wtime();
 
     // TODO: Send messages
-    MPI_Send(&message[0],size,MPI_INTEGER,destination,myid+1,MPI_COMM_WORLD);
+    MPI_Sendrecv(&message[0],size,MPI_INTEGER,destination,myid+1,&receiveBuffer[0],
+    size,MPI_INTEGER,source,myid,MPI_COMM_WORLD,MPI_STATUS_IGNORE);
     printf("Sender: %d. Sent elements: %d. Tag: %d. Receiver: %d\n",
            myid, size, myid + 1, destination);
 
     // TODO: Receive messages
-    MPI_Recv(&receiveBuffer[0],size,MPI_INTEGER,source,myid,MPI_COMM_WORLD,MPI_STATUS_IGNORE);
     printf("Receiver: %d. first element %d.\n",
            myid, receiveBuffer[0]);
 
