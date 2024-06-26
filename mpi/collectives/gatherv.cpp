@@ -36,8 +36,10 @@ int main(int argc, char *argv[])
 
     /* Print data that was received */
     /* TODO: use correct buffer */
-    MPI_Bcast(sendbuf.data(), 2 * NTASKS, MPI_INT, 0, MPI_COMM_WORLD);
-    print_buffers(sendbuf);
+    int sendarray[4] = {1,1,2,4};
+    int recvarray[4] = {0,1,2,4};
+    MPI_Gatherv(sendbuf.data(),sendarray[rank] , MPI_INT, recvbuf.data(),sendarray,recvarray,MPI_INT,1,MPI_COMM_WORLD);
+    print_buffers(recvbuf);
 
     MPI_Finalize();
     return 0;

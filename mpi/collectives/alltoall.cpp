@@ -36,8 +36,8 @@ int main(int argc, char *argv[])
 
     /* Print data that was received */
     /* TODO: use correct buffer */
-    MPI_Bcast(sendbuf.data(), 2 * NTASKS, MPI_INT, 0, MPI_COMM_WORLD);
-    print_buffers(sendbuf);
+    MPI_Alltoall(sendbuf.data(),2, MPI_INT, recvbuf.data(),2,MPI_INT,MPI_COMM_WORLD);
+    print_buffers(recvbuf);
 
     MPI_Finalize();
     return 0;
