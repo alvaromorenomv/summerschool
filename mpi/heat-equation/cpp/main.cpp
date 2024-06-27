@@ -47,8 +47,11 @@ int main(int argc, char **argv)
 
     // Time evolve
     for (int iter = 1; iter <= nsteps; iter++) {
-        exchange(previous, parallelization);
-        evolve(current, previous, a, dt);
+        std::vector<MPI_Request> request;
+        startExchangeNB(previous, parallelization, request);
+        computeInnerValues(current, previous, a, dt);
+        endExchangeNB(previous, parallelization, request);
+        computeBorderValues(current, previous, a, dt);
         if (iter % image_interval == 0) {
             write_field(current, iter, parallelization);
         }

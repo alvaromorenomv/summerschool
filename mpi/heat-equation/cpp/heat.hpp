@@ -62,6 +62,14 @@ void exchange(Field& field, const ParallelData parallel);
 
 void evolve(Field& curr, const Field& prev, const double a, const double dt);
 
+void startExchangeNB(Field& field, const ParallelData parallel, std::vector<MPI_Request>& request);
+
+void computeInnerValues(Field& curr, const Field& prev, const double a, const double dt);
+
+void endExchangeNB(Field& field, const ParallelData parallel, std::vector<MPI_Request>& request);
+
+void computeBorderValues(Field& curr, const Field& prev, const double a, const double dt);
+
 void write_field(const Field& field, const int iter, const ParallelData parallel);
 
 void read_field(Field& field, std::string filename,
