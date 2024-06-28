@@ -50,10 +50,15 @@ void single_writer(int my_id, int *localvector, int localsize)
 {
     FILE *fp;
     int *fullvector;
-
+    fullvector = (int *) malloc(DATASIZE * sizeof(int));
     /* TODO: Implement a function that will write the data to file so that
        a single process does the file io. Use rank WRITER_ID as the io rank */
-
+    MPI_Gather(localvector,localsize,MPI_INT,fullvector,localsize,MPI_INT,WRITER_ID,MPI_COMM_WORLD);
+    if (my_id == WRITER_ID){
+        fp = fopen("bobo.txt","w");
+        fwrite(fullvector,sizeof(int),DATASIZE,fp);
+        fclose(fp);
+    }
     free(fullvector);
 }
 
