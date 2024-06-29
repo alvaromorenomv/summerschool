@@ -4,13 +4,23 @@
 #include <iostream>
 #include <iomanip>
 #include <mpi.h>
+#include <omp.h>
 
 #include "heat.hpp"
 
 int main(int argc, char **argv)
 {
 
-    MPI_Init(&argc, &argv);
+    int provided,nthreads;
+    MPI_Init_thread(&argc, &argv,MPI_THREAD_FUNNELED,&provided);
+
+    #pragma omp parallel
+    {
+        #ifdef _OPENMP
+            #pragma omp master
+            nthreads = omp_get_num_threads();
+        #endif
+    }
 
     const int image_interval = 100;    // Image output interval
 
